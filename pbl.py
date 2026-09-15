@@ -20,4 +20,4 @@ cv2.imshow("Original Image", image)
 cv2.imshow("Binary Mask", mask)
 cv2.imshow("Segmented Fruit", segmented)
 cv2.waitKey(0)
-cv2.destroyAllWindows()
+cv2.destroyAllWindows()::
