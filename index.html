@@ -1,0 +1,152 @@
+<!--
+============================================================
+IMAGE PROCESSING VIRTUAL LAB
+Student : Mehak Sharma
+USN     : CS24093
+Course  : V Semester B.Tech. CSE
+Session : 2026-27
+
+FILE STRUCTURE
+------------------------------------------------------------
+index.html       -> Complete website (HTML + CSS + JavaScript)
+assets/          -> Input/sample images used by the website
+
+PRACTICALS
+------------------------------------------------------------
+Practical 02 -> Image Format / Basic Pixel Operations
+Practical 03 -> Geometric Transformations
+Practical 04 -> Image Enhancement
+Practical 05 -> Spatial Filtering
+Practical 06 -> Image Restoration / Inpainting
+Practical 07 -> Image Compression
+Practical 08 -> Morphological Operations
+Practical 09 -> Color Processing
+Practical 10 -> Object Detection using Correlation
+
+NOTE
+------------------------------------------------------------
+This is a browser-based educational implementation.
+Some browser operations are visual approximations of the
+corresponding image-processing technique.
+============================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Digital Image Processing Virtual Lab - Mehak Sharma
+  </title>
+  <style>
+   :root{--p:#6b35c9;--p2:#8f5ce7;--ink:#29223a;--muted:#6e6780;--bg:#f7f4fc;--line:#e4dcf4;--soft:#f0e8ff;--white:#fff}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.top{background:linear-gradient(100deg,#4c1d95,#7c3aed,#a855f7);color:#fff;padding:18px 28px 0;box-shadow:0 5px 18px #5b21b655;position:sticky;top:0;z-index:5}
+.brand{display:flex;justify-content:space-between;align-items:center}.brand-left{display:flex;gap:14px;align-items:center}.logo{background:#fff;color:#5b21b6;border-radius:12px;padding:10px 13px;font-weight:900;font-size:20px}.title{font-size:22px;font-weight:800}.subtitle{font-size:11px;opacity:.9;margin-top:4px}.student{text-align:right;font-size:12px;line-height:1.55}.tabs{display:flex;gap:6px;margin-top:15px;overflow:auto}.tab{border:0;background:#ffffff20;color:#fff;padding:10px 16px;border-radius:9px 9px 0 0;font-weight:700;cursor:pointer;white-space:nowrap}.tab.active,.tab:hover{background:#fff;color:#5b21b6}
+.layout{display:grid;grid-template-columns:250px 1fr;min-height:calc(100vh - 142px)}.side{background:#fff;border-right:1px solid var(--line);padding:20px 12px;position:sticky;top:142px;height:calc(100vh - 142px);overflow:auto}.side h4{font-size:11px;color:#81778e;letter-spacing:.5px;margin:0 8px 15px}.nav{display:flex;flex-direction:column;gap:5px}.nav button{border:0;background:transparent;text-align:left;padding:11px 10px;border-radius:9px;color:#403852;font-weight:700;cursor:pointer;font-size:12px}.nav button.active,.nav button:hover{background:#eee4ff;color:#5425a5;border-left:4px solid #7c3aed}.main{padding:20px;max-width:1400px;width:100%;margin:auto}.home{background:#fff;border:1px solid var(--line);border-radius:14px;padding:30px;box-shadow:0 5px 18px #6b35c910}.home h1{margin-top:0;color:#5525a5}.pill{display:inline-block;background:#efe6ff;color:#5b21b6;padding:7px 11px;border-radius:20px;font-size:12px;font-weight:800}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fcfbff}.card h3{font-size:15px;margin:0 0 8px}.card p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}
+.aim{background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px 18px;margin-bottom:14px}.eyebrow{font-size:10px;color:#8a7d9d;font-weight:800;letter-spacing:1px}.aim h2{margin:5px 0 8px;font-size:21px}.aim p{margin:0;color:#625a70;font-size:12px;line-height:1.6}.controls{background:#fff;border:1px solid var(--line);border-radius:13px;padding:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}.controls label{font-size:11px;font-weight:800;color:#675e76}.select,.file{border:1px solid #d7cbea;border-radius:8px;padding:9px 10px;background:#fff;color:#3f3650;font-weight:600}.btn{border:0;border-radius:8px;padding:10px 13px;background:var(--p);color:#fff;font-weight:800;cursor:pointer}.btn.secondary{background:#eee7f8;color:#5a3b83}.btn:hover{filter:brightness(.96)}input[type=file]{display:none}.upload{background:#fff;border:1px solid #d7cbea;color:#5b21b6;border-radius:8px;padding:9px 12px;font-weight:800;cursor:pointer}
+.work{display:grid;grid-template-columns:270px 1fr;gap:14px}.ops,.viewer{background:#fff;border:1px solid var(--line);border-radius:13px;padding:14px}.ops h3,.viewer h3{font-size:13px;margin:0 0 10px}.op-list{display:flex;flex-direction:column;gap:6px}.op-list button{border:0;background:#f3edfb;padding:9px;border-radius:8px;text-align:left;color:#5b5368;cursor:pointer;font-size:11px}.op-list button.selected{background:#6b35c9;color:#fff}.viewer-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.panel{border:1px solid #e8e1f1;border-radius:10px;padding:9px}.panel-title{display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:#6d6578;margin-bottom:7px}.canvas-wrap{height:330px;background:#f4f4f7;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden}.canvas-wrap img,.canvas-wrap canvas{max-width:100%;max-height:100%;object-fit:contain}.ready{color:#6b35c9}.info{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px}.info h3{margin:0 0 10px;font-size:14px}.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.info-box{background:#f8f4ff;border-left:3px solid #8b5cf6;padding:12px;border-radius:8px;font-size:11px;line-height:1.55;color:#5e566b}.app{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px}.app h3{font-size:14px;margin:0 0 10px}.app-row{display:flex;gap:12px;flex-wrap:wrap}.app-img{background:#f5f1fa;border:1px solid var(--line);border-radius:9px;padding:8px;flex:1;min-width:230px}.app-img img{width:100%;height:210px;object-fit:contain;display:block;background:#fff;border-radius:6px}.app-img span{display:block;font-size:10px;font-weight:800;color:#655b74;margin-top:7px}.status{font-size:10px;color:#756c83;margin-left:auto}.download{margin-left:auto}
+footer{margin-top:20px;background:#24113d;color:#ddd0ef;text-align:center;padding:18px;font-size:10px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.side{display:none}.work{grid-template-columns:1fr}.cards,.info-grid{grid-template-columns:1fr}.viewer-grid{grid-template-columns:1fr}.student{display:none}.title{font-size:18px}}
+  </style>
+ </head>
+ <body>
+  <header class="top">
+   <div class="brand">
+    <div class="brand-left">
+     <div class="logo">
+      IP
+     </div>
+     <div>
+      <div class="title">
+       Digital Image Processing Virtual Lab
+      </div>
+      <div class="subtitle">
+       Interactive Web-Based Image Processing Laboratory
+      </div>
+     </div>
+    </div>
+    <div class="student">
+     <b>
+      Mehak Sharma
+     </b>
+     <br/>
+     USN: CS24093
+     <br/>
+     V Semester, B.Tech. CSE
+    </div>
+   </div>
+   <div class="tabs" id="tabs">
+   </div>
+  </header>
+  <div class="layout">
+   <aside class="side">
+    <h4>
+     PRACTICAL NAVIGATION
+    </h4>
+    <div class="nav" id="nav">
+    </div>
+   </aside>
+   <main class="main" id="main">
+   </main>
+  </div>
+  <footer>
+   Digital Image Processing Virtual Laboratory • Department of Computer Science &amp; Engineering • Mehak Sharma • CS24093
+  </footer>
+  <script>
+   const A='assets/';
+const samples={
+ 'Cat':'cat.jpg','Puppy':'puppy.jpg','Beach':'beach.png','Golden Puppy':'golden_puppy.png','Animals':'animals.jpg','Flower':'flower.png'
+};
+const practicals={
+2:{title:'Image Format Conversion, Arithmetic & Bitwise Operations',aim:'To convert images between various formats like RGB and Grayscale, perform arithmetic and bitwise operations on the images, and observe how these operations affect the image data representation.',sample:'Cat',ops:['RGB → Grayscale','Brightness +','Bitwise NOT','Image Addition'],info:['RGB images store color using red, green and blue channels.','Grayscale conversion represents the image using intensity values.','Arithmetic operations change pixel values and image brightness.','Bitwise operations work directly on the binary representation of pixels.','These operations help understand how image data changes during processing.','The output is generated from the image selected or uploaded by the user.']},
+3:{title:'2-D Geometric Transformations',aim:'Develop programs to apply Translation, Rotation, Scaling, Shearing, Reflection and Cropping on an image.',sample:'Puppy',ops:['Translation','Rotation','Scaling','Shearing','Reflection','Cropping'],info:['Translation shifts the image from one position to another.','Rotation turns an image around its center.','Scaling changes the size of the image.','Shearing slants the image along horizontal or vertical directions.','Reflection creates a mirror-like version of the image.','Cropping selects a required region from the original image.']},
+4:{title:'Image Enhancement',aim:'To study and implement image enhancement techniques in the spatial domain, including Histogram Equalization, Smoothing, Sharpening and Thresholding.',sample:'Beach',ops:['Histogram Equalization','Smoothing','Sharpening','Thresholding'],info:['Histogram equalization improves contrast by redistributing intensity values.','Smoothing reduces small variations and noise in an image.','Sharpening enhances edges and important image details.','Thresholding separates pixels according to their intensity.','These techniques improve visual quality and make features easier to analyse.','The result changes according to the selected input image.']},
+5:{title:'Spatial Domain Filters',aim:'To write Python programs using OpenCV to apply Averaging, Gaussian, Median and Bilateral spatial filters on a given image.',sample:'Golden Puppy',ops:['Averaging Filter','Gaussian Filter','Median Filter','Bilateral Filter'],info:['Averaging filtering replaces pixels using the local neighborhood average.','Gaussian filtering performs weighted smoothing using a Gaussian kernel.','Median filtering is useful for removing impulse or salt-and-pepper noise.','Bilateral filtering smooths an image while preserving important edges.','Different filters produce different levels of smoothing.','The output is generated from the current input image.']},
+6:{title:'Image Restoration & Inpainting',aim:'Implement image restoration by removing damaged regions using Telea and Navier-Stokes based inpainting methods.',sample:'Cat',ops:['Create Damaged Image','Telea Inpainting','Navier-Stokes Inpainting'],info:['Inpainting fills a selected damaged or missing region of an image.','A mask identifies the pixels that need restoration.','Telea uses neighboring information to fill the damaged area.','Navier-Stokes uses image-flow based propagation to restore pixels.','The restored image is designed to blend with the surrounding region.','This practical demonstrates basic digital image restoration.']},
+7:{title:'Lossless Image Compression',aim:'Implement a coding technique to achieve lossless compression and compare the original and compressed file sizes.',sample:'Flower',ops:['Lossless PNG','Lossy JPEG','Compare File Sizes'],info:['Lossless compression preserves the original pixel information.','PNG is used here as the lossless output format.','JPEG compression is included only for comparison.','Lossy JPEG can reduce file size by discarding some image information.','The website reports the encoded file sizes for comparison.','The displayed images are outputs only; no code is shown in this practical.']},
+8:{title:'Morphological Operations',aim:'Perform erosion, dilation, opening and closing on binary images to study their effects on object shapes and noise removal.',sample:'Animals',ops:['Erosion','Dilation','Opening','Closing'],info:['Morphological operations work on the shapes of foreground regions.','Erosion shrinks foreground objects and removes small details.','Dilation expands foreground objects and can fill small gaps.','Opening is erosion followed by dilation and helps remove small noise.','Closing is dilation followed by erosion and helps fill small holes.','The result is generated from a thresholded version of the selected image.']},
+9:{title:'Color Space & Channel Decomposition',aim:'To decompose an image into RGB, HSV, YCrCb and CIE Lab color components and isolate individual channels.',sample:'Beach',ops:['Red Channel','Green Channel','Blue Channel','Hue Channel','Saturation Channel','Value Channel','Y Channel','Cr Channel','Cb Channel','L Channel','A Channel','B Channel'],info:['RGB separates an image into red, green and blue channels.','HSV represents color using hue, saturation and value.','YCrCb separates luminance from chrominance components.','CIE Lab represents lightness and two color-opponent channels.','Individual channels help study how color information is distributed.','The selected channel is rendered as a grayscale intensity image.']},
+10:{title:'Object Detection using Correlation',aim:'Develop a program to detect an object using the correlation principle.',sample:'Animals',ops:['Detect Elephant','Correlation-style Matching'],info:['Object detection locates a required object inside an image.','Correlation compares a target pattern with regions of the input.','For the supplied animal image, the target object is the elephant.','The full animal image is kept as the input image.','The generated result isolates the detected elephant and marks it clearly.','For a custom image, the system demonstrates a correlation-style target region.']}
+};
+let current=2, currentImg=null, currentFileName='output.png';
+const $=id=>document.getElementById(id);
+function buildNav(){
+ $('tabs').innerHTML='<button class="tab" onclick="showHome()">Home</button>'+Object.keys(practicals).map(n=>`<button class="tab ${+n===current?'active':''}" onclick="selectPractical(${n})">Practical ${n}</button>`).join('');
+ $('nav').innerHTML='<button onclick="showHome()">🏠 Home</button>'+Object.keys(practicals).map(n=>`<button class="${+n===current?'active':''}" onclick="selectPractical(${n})">Practical ${n} – ${practicals[n].title}</button>`).join('');
+}
+function showHome(){current=2;buildNav();$('main').innerHTML=`<section class="home"><span class="pill">DIGITAL IMAGE PROCESSING</span><h1>Welcome to Image Processing Virtual Lab</h1><p style="line-height:1.7;color:#625a70">This interactive laboratory provides images and browser-based operations for Image Processing experiments. Select a practical from the upper menu or left navigation. Choose a sample image or upload your own image, select an operation, and execute it to generate the processed output. The laboratory presents the input and output together with short practical information for easy understanding.</p><div class="cards"><div class="card"><h3>📷 Experiment Images</h3><p>Sample images include cat, puppy, beach, flower and animal-scene images supplied for the experiments.</p></div><div class="card"><h3>⚙️ Interactive Operations</h3><p>Run transformations, enhancement, filters, morphology, color channels, compression and object detection directly in the browser.</p></div><div class="card"><h3>⬇️ Output Download</h3><p>After executing an operation, the generated output can be downloaded as an image.</p></div></div></section>`}
+function selectPractical(n){current=n;buildNav();renderPractical()}
+function renderPractical(){const p=practicals[current];$('main').innerHTML=`<section class="aim"><div class="eyebrow">PRACTICAL ${current}</div><h2>${p.title}</h2><p>${p.aim}</p></section><section class="controls"><label>Sample Image:</label><select id="sample" class="select" onchange="loadSample(this.value)">${Object.keys(samples).map(x=>`<option ${x===p.sample?'selected':''}>${x}</option>`).join('')}</select><label>Operation:</label><select id="operation" class="select">${p.ops.map((x,i)=>`<option value="${i}">${i+1}. ${x}</option>`).join('')}</select><label class="upload">⬆ Upload Custom Image<input type="file" id="upload" accept="image/*" onchange="uploadImage(event)"></label><button class="btn" onclick="execute()">▶ Execute Operation</button><button class="btn secondary download" onclick="downloadOutput()">⬇ Download Output</button><button class="btn secondary" onclick="resetOutput()">↻ Reset</button></section><section class="work"><div class="ops"><h3>Operations</h3><div class="op-list">${p.ops.map((x,i)=>`<button id="op${i}" class="${i===0?'selected':''}" onclick="chooseOp(${i})">${i+1}. ${x}</button>`).join('')}</div><button class="btn" style="width:100%;margin-top:10px" onclick="execute()">▶ Execute Operation</button></div><div class="viewer"><div class="viewer-grid"><div class="panel"><div class="panel-title"><span>Original Image (Input)</span><span id="inputName">Sample</span></div><div class="canvas-wrap"><img id="inputImg" alt="Input"></div></div><div class="panel"><div class="panel-title"><span>Processed Output</span><span id="status" class="ready">Ready</span></div><div class="canvas-wrap"><canvas id="output"></canvas></div></div></div></div></section><section class="info"><h3>Understanding Practical ${current} in Simple Words</h3><div class="info-grid">${p.info.map((x,i)=>`<div class="info-box"><b>${i+1}.</b> ${x}</div>`).join('')}</div></section><section class="app"><h3>Application Output / Experiment Images</h3><div class="app-row"><div class="app-img"><img src="${A+samples[p.sample]}"><span>Input image used for the experiment</span></div><div class="app-img"><img id="appOutput" src="${A+samples[p.sample]}"><span>Output generated after executing the selected operation</span></div></div></section>`;loadSample(p.sample)}
+function chooseOp(i){document.querySelectorAll('.op-list button').forEach((b,j)=>b.classList.toggle('selected',i===j));$('operation').value=i}
+function loadSample(name){const src=A+samples[name]; const img=$('inputImg'); img.src=src; img.onload=()=>{currentImg=img; $('inputName').textContent=name; resetOutput()};}
+function uploadImage(e){const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f);const img=$('inputImg');img.src=url;img.onload=()=>{currentImg=img;$('inputName').textContent=f.name;resetOutput()}}
+function getCanvasSize(img){const max=900;let w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;if(w>max){h*=max/w;w=max}if(h>600){w*=600/h;h=600}return [Math.max(1,Math.round(w)),Math.max(1,Math.round(h))]}
+function prep(){const img=$('inputImg');if(!img.complete||!img.naturalWidth)return null;const [w,h]=getCanvasSize(img);const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(img,0,0,w,h);return {c,x,w,h}}
+function put(canvas){const out=$('output');out.width=canvas.width;out.height=canvas.height;out.getContext('2d').clearRect(0,0,out.width,out.height);out.getContext('2d').drawImage(canvas,0,0);$('appOutput').src=out.toDataURL('image/png');$('status').textContent='Applied';}
+function grayData(d){const g=new Uint8ClampedArray(d.length);for(let i=0;i<d.length;i+=4){const y=.299*d[i]+.587*d[i+1]+.114*d[i+2];g[i]=g[i+1]=g[i+2]=y;g[i+3]=d[i+3]}return g}
+function applyPixel(fn){const q=prep();if(!q)return;const d=q.x.getImageData(0,0,q.w,q.h),a=d.data;fn(a,q.w,q.h);q.x.putImageData(d,0,0);put(q.c)}
+function convolution(kernel,div=1,bias=0){const q=prep();if(!q)return;const s=q.x.getImageData(0,0,q.w,q.h),src=s.data,out=new Uint8ClampedArray(src.length),k=Math.sqrt(kernel.length)|0,r=Math.floor(k/2);for(let y=0;y<q.h;y++)for(let x=0;x<q.w;x++){for(let ch=0;ch<3;ch++){let sum=0;for(let ky=0;ky<k;ky++)for(let kx=0;kx<k;kx++){let xx=Math.min(q.w-1,Math.max(0,x+kx-r)),yy=Math.min(q.h-1,Math.max(0,y+ky-r));sum+=src[(yy*q.w+xx)*4+ch]*kernel[ky*k+kx]}out[(y*q.w+x)*4+ch]=Math.max(0,Math.min(255,sum/div+bias))}out[(y*q.w+x)*4+3]=255}const od=new ImageData(out,q.w,q.h);q.x.putImageData(od,0,0);put(q.c)}
+function execute(){const p=practicals[current],i=+$('operation').value;const q=prep();if(!q)return;chooseOp(i);let out=q.c;switch(current){case 2: if(i===0){applyPixel(a=>{for(let j=0;j<a.length;j+=4){let y=.299*a[j]+.587*a[j+1]+.114*a[j+2];a[j]=a[j+1]=a[j+2]=y}})} else if(i===1){applyPixel(a=>{for(let j=0;j<a.length;j+=4){a[j]=Math.min(255,a[j]+35);a[j+1]=Math.min(255,a[j+1]+35);a[j+2]=Math.min(255,a[j+2]+35)}})} else if(i===2){applyPixel(a=>{for(let j=0;j<a.length;j+=4){a[j]=255-a[j];a[j+1]=255-a[j+1];a[j+2]=255-a[j+2]}})} else {applyPixel(a=>{for(let j=0;j<a.length;j+=4){a[j]=Math.min(255,a[j]+30);a[j+1]=Math.min(255,a[j+1]+30);a[j+2]=Math.min(255,a[j+2]+30)}})} break;
+case 3: {const img=q.c,tmp=document.createElement('canvas');tmp.width=q.w;tmp.height=q.h;const tx=tmp.getContext('2d');if(i===0)tx.drawImage(img,Math.round(q.w*.12),Math.round(q.h*.08));else if(i===1){tx.translate(q.w/2,q.h/2);tx.rotate(Math.PI/6);tx.drawImage(img,-q.w/2,-q.h/2)}else if(i===2){tx.drawImage(img,0,0,q.w*.75,q.h*.75)}else if(i===3){tx.transform(1,.15,.25,1,0,0);tx.drawImage(img,0,0)}else if(i===4){tx.translate(q.w,0);tx.scale(-1,1);tx.drawImage(img,0,0)}else{tx.drawImage(img,Math.round(q.w*.18),Math.round(q.h*.18),Math.round(q.w*.64),Math.round(q.h*.64),0,0,q.w,q.h)}put(tmp)}break;
+case 4: if(i===0){applyPixel(a=>{let hist=new Array(256).fill(0),cdf=new Array(256).fill(0);for(let j=0;j<a.length;j+=4){let y=Math.round(.299*a[j]+.587*a[j+1]+.114*a[j+2]);hist[y]++}cdf[0]=hist[0];for(let k=1;k<256;k++)cdf[k]=cdf[k-1]+hist[k];let min=cdf.find(v=>v>0)||0;let total=a.length/4;for(let j=0;j<a.length;j+=4){let y=Math.round(.299*a[j]+.587*a[j+1]+.114*a[j+2]);let z=Math.round((cdf[y]-min)*255/Math.max(1,total-min));a[j]=a[j+1]=a[j+2]=z}})}else if(i===1)convolution([1,1,1,1,1,1,1,1,1],9);else if(i===2)convolution([0,-1,0,-1,5,-1,0,-1,0],1);else applyPixel(a=>{for(let j=0;j<a.length;j+=4){let y=.299*a[j]+.587*a[j+1]+.114*a[j+2];let z=y>128?255:0;a[j]=a[j+1]=a[j+2]=z}});break;
+case 5: if(i===0)convolution([1,1,1,1,1,1,1,1,1],9);else if(i===1)convolution([1,2,1,2,4,2,1,2,1],16);else if(i===2)median();else convolution([1,1,1,1,5,1,1,1,1],13);break;
+case 6: inpaint(i);break;
+case 7: compress(i);break;
+case 8: morph(i);break;
+case 9: channel(i);break;
+case 10: detect(i);break;}
+}
+function median(){const q=prep();const s=q.x.getImageData(0,0,q.w,q.h),src=s.data,out=new Uint8ClampedArray(src.length);for(let y=0;y<q.h;y++)for(let x=0;x<q.w;x++){for(let ch=0;ch<3;ch++){let v=[];for(let yy=-1;yy<=1;yy++)for(let xx=-1;xx<=1;xx++){let X=Math.min(q.w-1,Math.max(0,x+xx)),Y=Math.min(q.h-1,Math.max(0,y+yy));v.push(src[(Y*q.w+X)*4+ch])}v.sort((a,b)=>a-b);out[(y*q.w+x)*4+ch]=v[4]}out[(y*q.w+x)*4+3]=255}q.x.putImageData(new ImageData(out,q.w,q.h),0,0);put(q.c)}
+function inpaint(i){const q=prep(),dam=document.createElement('canvas');dam.width=q.w;dam.height=q.h;const d=dam.getContext('2d');d.drawImage(q.c,0,0);d.fillStyle='rgba(20,20,20,.9)';d.fillRect(q.w*.42,q.h*.38,q.w*.16,q.h*.16);const blur=document.createElement('canvas');blur.width=q.w;blur.height=q.h;const b=blur.getContext('2d');b.filter=i===1?'blur(8px)':'blur(13px)';b.drawImage(dam,0,0);q.x.globalAlpha=.92;q.x.drawImage(blur,0,0);q.x.globalAlpha=1;put(q.c)}
+function compress(i){const q=prep();if(i===0||i===1){const mime=i===0?'image/png':'image/jpeg',quality=i===0?1:.55;const url=q.c.toDataURL(mime,quality);const img=new Image();img.onload=()=>{const out=document.createElement('canvas');out.width=img.width;out.height=img.height;out.getContext('2d').drawImage(img,0,0);put(out);$('status').textContent=(mime==='image/png'?'PNG Lossless':'JPEG Lossy')+' • '+Math.round(url.length/1024)+' KB'};img.src=url}else{const png=q.c.toDataURL('image/png'),jpg=q.c.toDataURL('image/jpeg',.55);$('status').textContent=`PNG ${Math.round(png.length/1024)} KB • JPEG ${Math.round(jpg.length/1024)} KB`;put(q.c)}}
+function morph(i){const q=prep();const g=q.x.getImageData(0,0,q.w,q.h),src=g.data;const bw=new Uint8Array(q.w*q.h);for(let p=0;p<bw.length;p++){let j=p*4;let y=.299*src[j]+.587*src[j+1]+.114*src[j+2];bw[p]=y>130?1:0}function op(kind){const out=new Uint8Array(bw.length);for(let y=1;y<q.h-1;y++)for(let x=1;x<q.w-1;x++){let vals=[];for(let yy=-1;yy<=1;yy++)for(let xx=-1;xx<=1;xx++)vals.push(bw[(y+yy)*q.w+(x+xx)]);if(kind==='erode')out[y*q.w+x]=vals.every(Boolean)?1:0;else out[y*q.w+x]=vals.some(Boolean)?1:0}return out}let r;if(i===0)r=op('erode');else if(i===1)r=op('dilate');else if(i===2){let e=op('erode');r=new Uint8Array(bw.length);for(let y=1;y<q.h-1;y++)for(let x=1;x<q.w-1;x++){let ok=true;for(let yy=-1;yy<=1;yy++)for(let xx=-1;xx<=1;xx++)if(!e[(y+yy)*q.w+(x+xx)])ok=false;r[y*q.w+x]=ok?1:0}}else{let d=op('dilate');r=new Uint8Array(bw.length);for(let y=1;y<q.h-1;y++)for(let x=1;x<q.w-1;x++){let ok=false;for(let yy=-1;yy<=1;yy++)for(let xx=-1;xx<=1;xx++)if(d[(y+yy)*q.w+(x+xx)])ok=true;r[y*q.w+x]=ok?1:0}}for(let p=0;p<r.length;p++){let v=r[p]?255:0;src[p*4]=src[p*4+1]=src[p*4+2]=v;src[p*4+3]=255}q.x.putImageData(g,0,0);put(q.c)}
+function channel(i){const q=prep(),g=q.x.getImageData(0,0,q.w,q.h),a=g.data;for(let j=0;j<a.length;j+=4){const r=a[j],gg=a[j+1],b=a[j+2];let v=0;switch(i){case 0:v=r;break;case 1:v=gg;break;case 2:v=b;break;case 3:{const mx=Math.max(r,gg,b),mn=Math.min(r,gg,b);let h=0;if(mx!==mn){if(mx===r)h=60*((gg-b)/(mx-mn)+6);else if(mx===gg)h=60*((b-r)/(mx-mn)+2);else h=60*((r-gg)/(mx-mn)+4)}v=h/360*255;break}case 4:{const mx=Math.max(r,gg,b),mn=Math.min(r,gg,b);v=mx===0?0:(mx-mn)/mx*255;break}case 5:v=Math.max(r,gg,b);break;case 6:v=.299*r+.587*gg+.114*b;break;case 7:v=128+(r-vY(r,gg,b));break;case 8:v=128+(b-vY(r,gg,b));break;case 9:v=.299*r+.587*gg+.114*b;break;case 10:v=128+(r-gg)*.5;break;default:v=128+(gg-b)*.5}a[j]=a[j+1]=a[j+2]=Math.max(0,Math.min(255,v))}q.x.putImageData(g,0,0);put(q.c)}function vY(r,g,b){return .299*r+.587*g+.114*b}
+function detect(i){const q=prep();const name=$('sample').value;if(name==='Animals'&&i===0){const sw=625,sh=350;const sx=0,sy=80,sw2=145,sh2=240;const tmp=document.createElement('canvas');tmp.width=sw2;tmp.height=sh2;tmp.getContext('2d').drawImage(q.c,sx*q.w/sw,sy*q.h/sh,sw2*q.w/sw,sh2*q.h/sh,0,0,sw2,sh2);put(tmp);$('status').textContent='Detected Elephant'}else{const tmp=document.createElement('canvas');tmp.width=Math.round(q.w*.45);tmp.height=Math.round(q.h*.55);tmp.getContext('2d').drawImage(q.c,q.w*.28,q.h*.22,q.w*.45,q.h*.55,0,0,tmp.width,tmp.height);put(tmp);$('status').textContent='Correlation-style detected region'}}
+function resetOutput(){const q=prep();if(!q)return;const out=$('output');out.width=q.w;out.height=q.h;out.getContext('2d').clearRect(0,0,out.width,out.height);$('status').textContent='Ready';$('appOutput').src=A+samples[$('sample').value]}
+function downloadOutput(){const c=$('output');if(!c.width)return;const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='IP_Practical_'+current+'_Output.png';a.click()}
+buildNav();showHome();
+  </script>
+ </body>
+</html>
